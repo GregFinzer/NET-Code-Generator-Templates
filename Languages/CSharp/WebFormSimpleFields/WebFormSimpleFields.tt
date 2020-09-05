@@ -1,0 +1,135 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ include file="$(projectDir)\Includes\WebFormHelper.tt" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#
+/* 
+Name: WebFormSimpleFields
+Author: Greg Finzer
+Description: Create a simple WebForm with Form Fields
+*/
+    CodeGenProject proj= LoadProject();
+   
+    foreach(var entity in  proj.Entities)
+    {        
+        bool insideGroupBox = false;   
+        bool insideForm = false;         
+#>
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AllTypes.aspx.cs" Inherits="AllTypes" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title><#=entity.Description #></title>
+</head>
+<body>
+    <form id="<#=proj.GetControlName(ControlType.Form, entity.Name) #>" runat="server">
+<# 
+PushIndent("\t");
+PushIndent("\t");
+
+foreach (var prop in entity.Properties) {
+
+    if (prop.ControlType == ControlType.CheckBox || prop.ControlType == ControlType.RadioButton)
+    {
+        WriteLine("<div>");
+        PushIndent("\t");
+    }
+    else if (prop.IsInputControl)
+    {
+        WriteLine("<div>");
+        PushIndent("\t");
+        WriteLine("<asp:Label ID=\"" + proj.GetControlName(ControlType.Label, prop.Name) + "\" AssociatedControlId=\"" + prop.ControlName + "\" runat=\"server\" Text=\"" + prop.Description + "\"></asp:Label>");
+    }        
+    else if (prop.ControlType == ControlType.Form && insideForm)
+    {
+        PopIndent();
+        WriteLine("</form>");
+    }
+    else if (prop.ControlType == ControlType.GroupBox && insideGroupBox)
+    {
+        PopIndent();
+        WriteLine("</fieldset>");
+    }
+ 
+    WriteLine(WebFormHelper.ToControlText(prop));
+     
+    if (prop.IsInputControl)
+    {
+        PopIndent();
+        WriteLine("</div>");
+    }
+    else if (prop.ControlType == ControlType.Form)
+    {
+        insideForm = true;
+        PushIndent("\t");
+    }
+    else if (prop.ControlType == ControlType.GroupBox)
+    {
+        PushIndent("\t");
+        insideGroupBox = true;
+    }
+}
+
+ClearIndent();
+#>
+    </form>
+</body>
+</html>
+
+<# 
+        string fileName = proj.GetFileName(entity.Name) + ".aspx";
+        SaveOutput(fileName);
+    }
+#>
+<#+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) 
+	{
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

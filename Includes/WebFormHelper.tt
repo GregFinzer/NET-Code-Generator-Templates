@@ -1,0 +1,50 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#+
+/* 
+Name: WebFormHelper
+Author: Greg Finzer
+Description: Helper Class for ASP.NET Web Forms
+*/
+    public static class WebFormHelper
+    {
+        public static string ToControlText(CodeGenProp prop)
+        {
+            switch(prop.ControlType)
+            {
+                case ControlType.Form:
+                    return "<form id=\"" + prop.ControlName + "\" runat=\"server\">";
+                case ControlType.Button:
+                    return "<asp:Button ID=\"" + prop.ControlName + "\" runat=\"server\" Text=\"" + prop.Description + "\" />";
+                case ControlType.CheckBox:
+                    return "<asp:CheckBox ID=\"" + prop.ControlName + "\" runat=\"server\" Text=\"" + prop.Description + "\" />";
+                case ControlType.DropDown:
+                    string text = "<asp:DropDownList ID=\"" + prop.ControlName + "\" runat=\"server\">" + Environment.NewLine;
+                    text += "</asp:DropDownList>";
+                    return text;
+                case ControlType.GroupBox:
+                    string groupBoxText = "<fieldset>";
+                    groupBoxText += "<legend>" + prop.Description + "</legend>";
+                    return groupBoxText;
+                case ControlType.RadioButton:
+                    return "<asp:RadioButton ID=\"" + prop.ControlName + "\" runat=\"server\" GroupName=\"" + prop.RadioName + "\" Text=\"" + prop.Description + "\" />";
+                case ControlType.TextAreaInput:
+                    return "<asp:TextBox ID=\"" + prop.ControlName + "\" runat=\"server\" Columns=\"50\" Rows=\"4\" TextMode=\"MultiLine\"></asp:TextBox>";
+                case ControlType.Label:
+                    return "<asp:Label ID=\"" + prop.ControlName + "\" runat=\"server\" Text=\"" + prop.Description + "\"></asp:Label>";
+                default:
+                    if (prop.Length.HasValue)
+                    {
+                        return "<asp:TextBox ID=\"" + prop.ControlName + "\" runat=\"server\" MaxLength=\"" + prop.Length.Value +  "\"></asp:TextBox>";
+                    }
+                    else
+                    {
+                        return "<asp:TextBox ID=\"" + prop.ControlName + "\" runat=\"server\"></asp:TextBox>";
+                    }            
+            }
+        }
+    }
+#>

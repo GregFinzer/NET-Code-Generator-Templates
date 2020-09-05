@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{97F0BD53-EC6A-4570-8FF2-6C223FFED29E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Templates</RootNamespace>
+    <AssemblyName>Templates</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assemblies\KellermanSoftware.Common.dll" />
+    <Content Include="Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" />
+    <Content Include="Assemblies\Newtonsoft.Json.dll" />
+    <Content Include="Examples\BaseExample\BaseExample.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BaseExample.out</LastGenOutput>
+    </Content>
+    <Content Include="Examples\BaseSingleFileExample\BaseSingleFileExample.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BaseSingleFileExample.out</LastGenOutput>
+    </Content>
+    <Content Include="Examples\ListOfProperties\ListOfProperties.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ListOfProperties.out</LastGenOutput>
+    </Content>
+    <Content Include="General\SetList\SetList.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SetList.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\HTMLHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HTMLHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\ReactHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReactHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\TypeScriptHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeScriptHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\VBNetHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VBNetHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\CSharpHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CSharpHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\VueJSHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VueJSHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\WebFormHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WebFormHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Includes\XAMLHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>XAMLHelper.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\AspMvc\Controllers\AspMvcController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AspMvcController.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\AspMvc\Models\AspMvcModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AspMvcModel.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\AspMvc\Views\Create.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Create.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\AspMvc\Views\Delete.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Delete.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\AspMvc\Views\Details.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Details.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\AspMvc\Views\Edit.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Edit.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\AspMvc\Views\Index.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Index.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\CSharpClassNoRegions\CSharpClassNoRegions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CSharpClassNoRegions.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\CSharpClassWithRegions\CSharpClassWithRegions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CSharpClassWithRegions.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\EntityFrameworkClass\EntityFrameworkClass.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityFrameworkClass.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\WebFormSimpleFields\WebFormSimpleFields.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WebFormSimpleFields.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\WebFormSimpleFields\WebFormSimpleFieldsCodeBehind.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WebFormSimpleFieldsCodeBehind.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\HTML\HTML_Bootstrap_Form\HTML_Bootstrap_Form.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HTML_Bootstrap_Form.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\HTML\HTML_Form\HTML_Form.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HTML_Form.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\JavaScript\ReactForm\ReactForm.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReactForm.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\JavaScript\VueJS_Form\VueJS_Form.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VueJS_Form.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\TypeScript\NestJS_Swagger\NestJS_Swagger.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NestJS_Swagger.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\WinformSimpleFields\WinformSimpleFields.Designer.cs.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WinformSimpleFields.Designer.cs.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\WinformSimpleFields\WinformSimpleFields.cs.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WinformSimpleFields.cs.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\CSharp\WinformSimpleFields\WinformSimpleFields.Resx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WinformSimpleFields.Resx.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\TypeScript\TypeScriptClassWithFields\TypeScriptClassWithFields.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeScriptClassWithFields.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\TypeScript\TypeScriptInterface\TypeScriptInterface.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeScriptInterface.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\VBNet\VBNetClassNoRegions\VBNetClassNoRegions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VBNetClassNoRegions.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\VBNet\VBNetClassWithRegions\VBNetClassWithRegions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VBNetClassWithRegions.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\XAML\WPF_Form\WPF_Code_Behind.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WPF_Code_Behind.out</LastGenOutput>
+    </Content>
+    <Content Include="Languages\XAML\WPF_Form\WPF_Form.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WPF_Form.out</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Examples\BaseExample\BaseExample.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseExample.tt</DependentUpon>
+    </None>
+    <None Include="Examples\BaseSingleFileExample\BaseSingleFileExample.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseSingleFileExample.tt</DependentUpon>
+    </None>
+    <None Include="Examples\ListOfProperties\ListOfProperties.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ListOfProperties.tt</DependentUpon>
+    </None>
+    <None Include="General\SetList\SetList.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SetList.tt</DependentUpon>
+    </None>
+    <None Include="GenerationInput.json" />
+    <None Include="Includes\CSharpHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharpHelper.tt</DependentUpon>
+    </None>
+    <None Include="Includes\HTMLHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HTMLHelper.tt</DependentUpon>
+    </None>
+    <None Include="Includes\ReactHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReactHelper.tt</DependentUpon>
+    </None>
+    <None Include="Includes\TypeScriptHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeScriptHelper.tt</DependentUpon>
+    </None>
+    <None Include="Includes\VBNetHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VBNetHelper.tt</DependentUpon>
+    </None>
+    <None Include="Includes\VueJSHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VueJSHelper.tt</DependentUpon>
+    </None>
+    <None Include="Includes\WebFormHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebFormHelper.tt</DependentUpon>
+    </None>
+    <None Include="Includes\XAMLHelper.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XAMLHelper.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\AspMvc\Controllers\AspMvcController.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AspMvcController.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\AspMvc\Models\AspMvcModel.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AspMvcModel.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\AspMvc\Views\Create.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\AspMvc\Views\Delete.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\AspMvc\Views\Details.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Details.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\AspMvc\Views\Edit.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Edit.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\AspMvc\Views\Index.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\CSharpClassNoRegions\CSharpClassNoRegions.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharpClassNoRegions.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\CSharpClassWithRegions\CSharpClassWithRegions.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharpClassWithRegions.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\EntityFrameworkClass\EntityFrameworkClass.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityFrameworkClass.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\WebFormSimpleFields\WebFormSimpleFields.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebFormSimpleFields.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\WebFormSimpleFields\WebFormSimpleFieldsCodeBehind.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebFormSimpleFieldsCodeBehind.tt</DependentUpon>
+    </None>
+    <None Include="Languages\HTML\HTML_Bootstrap_Form\HTML_Bootstrap_Form.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HTML_Bootstrap_Form.tt</DependentUpon>
+    </None>
+    <None Include="Languages\HTML\HTML_Form\HTML_Form.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HTML_Form.tt</DependentUpon>
+    </None>
+    <None Include="Languages\JavaScript\ReactForm\ReactForm.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReactForm.tt</DependentUpon>
+    </None>
+    <None Include="Languages\JavaScript\VueJS_Form\VueJS_Form.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VueJS_Form.tt</DependentUpon>
+    </None>
+    <None Include="Languages\TypeScript\NestJS_Swagger\NestJS_Swagger.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NestJS_Swagger.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\WinformSimpleFields\WinformSimpleFields.cs.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WinformSimpleFields.cs.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\WinformSimpleFields\WinformSimpleFields.Designer.cs.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WinformSimpleFields.Designer.cs.tt</DependentUpon>
+    </None>
+    <None Include="Languages\CSharp\WinformSimpleFields\WinformSimpleFields.Resx.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WinformSimpleFields.Resx.tt</DependentUpon>
+    </None>
+    <None Include="Languages\TypeScript\TypeScriptClassWithFields\TypeScriptClassWithFields.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeScriptClassWithFields.tt</DependentUpon>
+    </None>
+    <None Include="Languages\TypeScript\TypeScriptInterface\TypeScriptInterface.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeScriptInterface.tt</DependentUpon>
+    </None>
+    <None Include="Languages\VBNet\VBNetClassNoRegions\VBNetClassNoRegions.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VBNetClassNoRegions.tt</DependentUpon>
+    </None>
+    <None Include="Languages\VBNet\VBNetClassWithRegions\VBNetClassWithRegions.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VBNetClassWithRegions.tt</DependentUpon>
+    </None>
+    <None Include="Languages\XAML\WPF_Form\WPF_Code_Behind.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WPF_Code_Behind.tt</DependentUpon>
+    </None>
+    <None Include="Languages\XAML\WPF_Form\WPF_Form.out">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WPF_Form.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NET-Code-Generator-Logic\NET-Code-Generator-Logic.csproj">
+      <Project>{00b5fca9-faf6-4f17-9130-ef15888119a2}</Project>
+      <Name>NET-Code-Generator-Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

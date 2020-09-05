@@ -1,0 +1,147 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ include file="$(projectDir)\Includes\HTMLHelper.tt" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#
+/*
+Name: Simple HTML Form
+Author: Greg Finzer
+Description: Create a simple VB.NET POCO with a list of properties without regions
+*/
+    CodeGenProject proj= LoadProject();
+  
+    foreach(var entity in  proj.Entities)
+    {    
+        bool insideGroupBox = false;   
+        bool insideForm = false; 
+#>
+<html lang="en">
+
+<head>
+    <title><#= entity.Description #></title>
+</head>
+
+<body>
+<#
+PushIndent("\t");
+
+if (!entity.Properties.Any(o => o.ControlType == ControlType.GroupBox)
+    && !entity.Properties.Any(o => o.ControlType == ControlType.Form)) 
+{
+    insideGroupBox= true;
+    PushIndent("\t");
+    WriteLine("<fieldset>");
+    PushIndent("\t");
+    WriteLine("<legend>" + entity.Description + "</legend>");
+}
+foreach (var prop in entity.Properties)
+{
+    if (prop.IsInputControl)
+    {
+        WriteLine("<div>");
+        PushIndent("\t");
+        WriteLine("<label for=\"" + prop.ControlName + "\">" + prop.Description + "</label>");
+    }        
+    else if (prop.ControlType == ControlType.Form && insideForm)
+    {
+        PopIndent();
+        WriteLine("</form>");
+    }
+    else if (prop.ControlType == ControlType.GroupBox && insideGroupBox)
+    {
+        PopIndent();
+        WriteLine("</fieldset>");
+    }
+
+
+    WriteLine(HTMLHelper.ToControlText(prop));
+
+    if (prop.IsInputControl)
+    {
+        PopIndent();
+        WriteLine("</div>");
+    }
+    else if (prop.ControlType == ControlType.Form)
+    {
+        insideForm = true;
+        PushIndent("\t");
+    }
+    else if (prop.ControlType == ControlType.GroupBox)
+    {
+        PushIndent("\t");
+        insideGroupBox = true;
+    }
+}
+
+if (insideGroupBox) 
+{ 
+    PopIndent();
+    WriteLine("</fieldset>");
+}
+
+if (insideForm) 
+{ 
+    PopIndent();
+    WriteLine("</form>");
+}
+ClearIndent();
+#>
+    
+</body>
+</html>
+
+<# 
+        string fileName = proj.GetFileName(entity.Name) + ".html";
+        SaveOutput(fileName);
+    }
+#>
+<#+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) 
+	{
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

@@ -1,0 +1,106 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+/* 
+Name: TypeScriptHelper
+Author: Greg Finzer
+Description: Helper Class for the TypeScript Language
+*/
+
+    public static class TypeScriptHelper
+    {
+        public static List<string> GetClassValidatorLines(CodeGenProp prop)
+        {
+            List<string> result = new List<string>();
+
+            if (prop.AllowNull)
+            {
+                result.Add("@IsOptional()");
+            }
+            else if (prop.DataType == DataType.ArrayInt 
+                || prop.DataType == DataType.ListInt 
+                || prop.DataType == DataType.ArrayString 
+                || prop.DataType == DataType.ListString)
+            {
+                result.Add("@ArrayNotEmpty()");
+            }
+            else if (prop.DataType == DataType.String)
+            {
+                result.Add("@IsNotEmpty()");
+            }
+
+            switch(prop.DataType)
+            {
+                case DataType.Boolean:
+                    result.Add("@IsBoolean()");
+                    break;
+                case DataType.DateTime:
+                    result.Add("@IsDate()");
+                    result.Add("@Type(() => Date)");
+                    break;
+                case DataType.Currency:
+                case DataType.Decimal:
+                case DataType.Single:
+                case DataType.Double:
+                case DataType.Int16:
+                case DataType.Int32:
+                case DataType.Int64:
+                case DataType.UInt16:
+                case DataType.UInt32:
+                case DataType.UInt64:
+                    result.Add("@IsNumber()");
+                    break;
+                case DataType.ListInt:
+                case DataType.ArrayInt:
+                case DataType.ListString:
+                case DataType.ArrayString:
+                    result.Add("@IsArray()");
+                    break;
+                default:
+                    result.Add("@IsString()");
+                    
+                    if (prop.ControlType == ControlType.EmailInput)
+                    {
+                        result.Add("@IsEmail()");
+                    }
+                    break;
+            }
+
+            return result;
+        }
+
+        public static string ToType(CodeGenProp prop)
+        {
+            switch(prop.DataType)
+            {
+                case DataType.Boolean:
+                    return "boolean";
+                case DataType.DateTime:
+                    return "Date";
+                case DataType.Currency:
+                case DataType.Decimal:
+                case DataType.Single:
+                case DataType.Double:
+                case DataType.Int16:
+                case DataType.Int32:
+                case DataType.Int64:
+                case DataType.UInt16:
+                case DataType.UInt32:
+                case DataType.UInt64:
+                    return "number";
+                case DataType.ListInt:
+                case DataType.ArrayInt:
+                    return "number[]";
+                case DataType.ListString:
+                case DataType.ArrayString:
+                    return "string[]";
+                default:
+                    return "string";
+            }
+        }
+    }
+#>

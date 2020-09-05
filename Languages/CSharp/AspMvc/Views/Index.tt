@@ -1,0 +1,119 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ include file="$(projectDir)\Includes\CSharpHelper.tt" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+/* 
+Name: ASP.NET MVC Index
+Author: Greg Finzer
+Description: Create a simple ASP.NET MVC View for Index
+*/
+    CodeGenProject proj= LoadProject();
+   
+    foreach(var entity in  proj.Entities)
+    {       
+#>
+@model TestAspDotNetCoreMvcSimple.Models.<#=entity.NamePascalCaseSingular#>
+
+@{
+    ViewData["Title"] = "<#=entity.Description#>";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+<# 
+const int maxColumns = 5;
+List<CodeGenProp> textProps = entity.Properties.Where(o => o.ControlType == ControlType.TextInput && !o.IsPrimaryKey).ToList();
+
+for (int i=0;i<maxColumns;i++) { #>
+            <th>
+                @Html.DisplayNameFor(model => model.<#=entity.Properties[i].NamePascalCase #>)
+            </th>
+<#}#>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+<#for (int i=0;i<maxColumns;i++) { #>
+            <td>
+                @Html.DisplayFor(modelItem => item.<#=entity.Properties[i].NamePascalCase #>)
+            </td>
+<#}#>
+            <td>
+<#if (entity.PrimaryKey == null) {#>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+<#} else {#>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.<#=entity.PrimaryKey.NamePascalCase#>  }) |
+                @Html.ActionLink("Details", "Details", new { id=item.<#=entity.PrimaryKey.NamePascalCase#>  }) |
+                @Html.ActionLink("Delete", "Delete", new {  id=item.<#=entity.PrimaryKey.NamePascalCase#>  })
+<#}#> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<# 
+        string fileName = "Index.cshtml";
+        SaveOutput(fileName, entity.NamePascalCasePlural);
+    }
+#>
+<#+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) 
+	{
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

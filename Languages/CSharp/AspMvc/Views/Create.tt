@@ -1,0 +1,120 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ include file="$(projectDir)\Includes\CSharpHelper.tt" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#
+/* 
+Name: ASP.NET MVC Create View
+Author: Greg Finzer
+Description: Create a simple ASP.NET MVC View for Create
+*/
+    CodeGenProject proj= LoadProject();
+   
+    foreach(var entity in  proj.Entities)
+    {       
+#>
+@model TestAspDotNetCoreMvcSimple.Models.<#=entity.NamePascalCaseSingular#>
+
+@{
+    ViewData["Title"] = "Create <#=entity.Description#>";
+}
+
+<h2>Create</h2>
+
+<h4><#=entity.Description#></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<# foreach (var prop in entity.Properties) 
+{
+if (prop.IsPrimaryKey)
+{
+    continue;
+}
+else if (prop.ControlType == ControlType.CheckBox) {#>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="<#=prop.NamePascalCase #>" /> @Html.DisplayNameFor(model => model.<#=prop.NamePascalCase #>)
+                    </label>
+                </div>
+            </div>
+<#} else {#> 
+            <div class="form-group">
+                <label asp-for="<#=prop.NamePascalCase #>" class="control-label"></label>
+                <input asp-for="<#=prop.NamePascalCase #>" class="form-control" />
+                <span asp-validation-for="<#=prop.NamePascalCase #>" class="text-danger"></span>
+            </div>
+<#}#>
+<#}#>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<# 
+        string fileName = "Create.cshtml";
+        SaveOutput(fileName, entity.NamePascalCasePlural);
+    }
+#>
+<#+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) 
+	{
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

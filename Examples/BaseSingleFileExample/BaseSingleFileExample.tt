@@ -1,0 +1,80 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#
+/* 
+Name: Base Single File Example
+Author: Greg Finzer
+Description: Base Example for a single file for a project.  Change the Name, Author, and Description.
+*/
+    CodeGenProject proj= LoadProject();
+#>
+*** Put Project Specific Code Here.  ****
+Company Name: <#= proj.CompanyName #>
+Project Namespace: <#= proj.ProjectNamespace #>
+
+<#  foreach(var entity in  proj.Entities)
+    {#>
+
+*** Put Class/Entity Specific Code Here.  ****
+Entity Name: <#= entity.Name #>
+Entity Description:  <#= entity.Name #>
+Entity Table Name:  <#= entity.TableName #>
+
+<#  }
+    //Change the file extension from .txt to whatever is desired
+    string fileName = proj.GetFileName(proj.ProjectName) + ".txt";
+    SaveOutput(fileName);
+#>
+<#+
+    //Don't change the code below or the generation will not work
+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) 
+	{
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

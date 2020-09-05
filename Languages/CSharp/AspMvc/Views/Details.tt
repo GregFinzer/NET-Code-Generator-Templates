@@ -1,0 +1,104 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ include file="$(projectDir)\Includes\CSharpHelper.tt" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#
+/* 
+Name: ASP.NET MVC Details View
+Author: Greg Finzer
+Description: Create a simple ASP.NET MVC View for Details
+*/
+    CodeGenProject proj= LoadProject();
+   
+    foreach(var entity in  proj.Entities)
+    {       
+#>
+@model TestAspDotNetCoreMvcSimple.Models.<#=entity.NamePascalCaseSingular#>
+
+@{
+    ViewData["Title"] = "<#=entity.Description#> Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4><#=entity.Description#></h4>
+    <hr />
+    <dl class="dl-horizontal">
+<# foreach (var prop in entity.Properties) {#>
+        <dt>
+            @Html.DisplayNameFor(model => model.<#=prop.NamePascalCase #>)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.<#=prop.NamePascalCase #>)
+        </dd>
+<#}#>
+    </dl>
+</div>
+<div>
+<#if (entity.PrimaryKey == null) {#>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+<#} else {#>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.<#=entity.PrimaryKey.NamePascalCase#> }) |
+<#}#> 
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<# 
+        string fileName = "Details.cshtml";
+        SaveOutput(fileName, entity.NamePascalCasePlural);
+    }
+#>
+<#+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) 
+	{
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

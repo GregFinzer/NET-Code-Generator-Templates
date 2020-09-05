@@ -1,0 +1,191 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ include file="$(projectDir)\Includes\HTMLHelper.tt" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#
+/*
+Name: HTML Bootstrap Form
+Author: Greg Finzer
+Description: Create a simple HTML Bootstram Form with a list of input controls
+*/
+    CodeGenProject proj= LoadProject();
+  
+    foreach(var entity in  proj.Entities)
+    {    
+        bool insideGroupBox = false;   
+        bool insideForm = false; 
+#>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <title><#= entity.Description #></title>
+</head>
+
+<body>
+    <div class="container">
+        <h1><#= entity.Description #></h1>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-9 col-sm-12">
+<#
+PushIndent("\t");
+PushIndent("\t");
+PushIndent("\t");
+
+if (!entity.Properties.Any(o => o.ControlType == ControlType.GroupBox)
+    && !entity.Properties.Any(o => o.ControlType == ControlType.Form)) 
+{
+    insideGroupBox= true;
+    PushIndent("\t");
+    WriteLine("<div class=\"card\">");
+    PushIndent("\t");
+    WriteLine("<div class=\"card-header\">");
+    PushIndent("\t");
+    WriteLine(entity.Description);
+    PopIndent();
+    WriteLine("</div>");
+    WriteLine("<div class=\"card-body\">");
+    PushIndent("\t");
+}
+foreach (var prop in entity.Properties)
+{
+    if (prop.ControlType == ControlType.CheckBox)
+    {
+        WriteLine("<div class=\"form-group\">");
+        PushIndent("\t");
+        WriteLine("<label class=\"control-label\" for=\"" + prop.ControlName + "\">");
+        PushIndent("\t");
+    }
+    else if (prop.IsInputControl)
+    {
+        WriteLine("<div class=\"form-group\">");
+        PushIndent("\t");
+        
+        WriteLine("<label class=\"control-label\" for=\"" + prop.ControlName + "\">" + prop.Description + "</label>");
+    }        
+    else if (prop.ControlType == ControlType.Form && insideForm)
+    {
+        PopIndent();
+        WriteLine("</form>");
+    }
+    else if (prop.ControlType == ControlType.GroupBox && insideGroupBox)
+    {
+        PopIndent();
+        WriteLine("</div>");
+        PopIndent();
+        WriteLine("</div>");
+    }
+    
+    WriteLine(HTMLHelper.ToBootStrapControlText(prop));
+
+    if (prop.ControlType == ControlType.CheckBox)
+    {
+        WriteLine(prop.Description);
+        PopIndent();
+        WriteLine("</label>");
+        PopIndent();
+        WriteLine("</div>");
+    }
+
+    else if (prop.IsInputControl)
+    {
+        PopIndent();
+        WriteLine("</div>");
+    }
+    else if (prop.ControlType == ControlType.Form)
+    {
+        insideForm = true;
+        PushIndent("\t");
+    }
+    else if (prop.ControlType == ControlType.GroupBox)
+    {
+        PushIndent("\t");
+        insideGroupBox = true;
+    }
+}
+
+if (insideGroupBox) 
+{ 
+    PopIndent();
+    WriteLine("</div>");
+    PopIndent();
+    WriteLine("</div>");
+}
+
+if (insideForm) 
+{ 
+    PopIndent();
+    WriteLine("</form>");
+}
+ClearIndent();
+#>
+           </div><#/*<div class="col-lg-6 col-md-9 col-sm-12">*/#>
+
+        </div><#/*Row*/#>
+
+    </div><#/*Container*/#>
+
+</body>
+</html>
+
+<# 
+        string fileName = proj.GetFileName(entity.Name) + ".html";
+        SaveOutput(fileName);
+    }
+#>
+<#+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) {
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

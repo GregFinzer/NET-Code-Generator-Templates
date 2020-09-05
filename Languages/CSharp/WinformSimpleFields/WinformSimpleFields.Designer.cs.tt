@@ -1,0 +1,306 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<# 
+/* 
+Name: Winform Simple Fields
+Author: Greg Finzer
+Description: Create a WinForm with a GroupBox containing a list of labels and controls
+*/
+    CodeGenProject proj= LoadProject();
+    
+    foreach(var entity in  proj.Entities)
+    {
+        string formName= proj.GetControlName(ControlType.Form, entity.Name);
+        string groupBoxName= proj.GetControlName(ControlType.GroupBox, entity.Name);  
+
+#>
+namespace <#= proj.ProjectNamespace #>
+{
+    partial class  <#= formName #>
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            <# //Groupbox #>
+            this.<#=groupBoxName#>= new System.Windows.Forms.GroupBox();
+
+<# 
+//Output labels
+for (int i=0;i<entity.Properties.Count;i++)
+{
+    Write("\t\t\tthis.");
+    Write(proj.GetControlName(ControlType.Label, entity.Properties[i].Name));
+    Write(" = new System.Windows.Forms.Label();\r\n");
+}
+#>
+
+<# 
+//Output Input Controls
+for (int i=0;i<entity.Properties.Count;i++)
+{
+    Write("\t\t\tthis.");
+    Write(entity.Properties[i].ControlName);
+
+    switch(entity.Properties[i].ControlType)
+    {
+        case ControlType.CheckBox:
+            WriteLine(" = new System.Windows.Forms.CheckBox();");
+            break;
+        case ControlType.DateInput:
+            WriteLine(" = new System.Windows.Forms.DateTimePicker();");
+            break;
+        case ControlType.DropDown:
+            WriteLine(" = new System.Windows.Forms.ComboBox();");
+            break;
+        case ControlType.IntegerInput:
+        case ControlType.PhoneInput:
+        case ControlType.PostalCodeInput:
+            WriteLine(" = new System.Windows.Forms.MaskedTextBox();");
+            break;
+        case ControlType.RadioButton:
+            WriteLine(" = new System.Windows.Forms.RadioButton();");
+            break;
+        default:
+            WriteLine(" = new System.Windows.Forms.TextBox();");
+            break;
+    }
+} 
+#>
+
+
+            <# //Groupbox #>
+            this.<#=groupBoxName#>.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // <#=groupBoxName#>
+            // 
+<# 
+//Add controls to groupbox
+for (int i=0;i<entity.Properties.Count;i++)
+{
+    //Add Label
+    Write("\t\t\tthis.");
+    Write(groupBoxName);
+    Write(".Controls.Add(this.");
+    Write(proj.GetControlName(ControlType.Label, entity.Properties[i].Name));
+    Write(");\r\n");
+
+    //Add Input Control
+    Write("\t\t\tthis.");
+    Write(groupBoxName);
+    Write(".Controls.Add(this.");
+    Write(entity.Properties[i].ControlName);
+    Write(");\r\n");
+}
+#>
+
+
+            this.<#=groupBoxName#>.Location = new System.Drawing.Point(12, 12);
+            this.<#=groupBoxName#>.Name = "<#=groupBoxName#>";
+            this.<#=groupBoxName#>.Size = new System.Drawing.Size(986, 706);
+            this.<#=groupBoxName#>.TabIndex = 0;
+            this.<#=groupBoxName#>.TabStop = false;
+            this.<#=groupBoxName#>.Text = "<#=entity.Description #>";
+
+<# 
+    int labelY = 30;
+    int controlY= 27;
+    int spacing= 26;
+    int tabIndex= 0;
+
+//Individual Controls and Labels
+for (int i=0;i<entity.Properties.Count;i++)
+{
+        string labelName= proj.GetControlName(ControlType.Label, entity.Properties[i].Name);
+        string controlName = entity.Properties[i].ControlName;
+#>
+            // 
+            // Label: <#=labelName#>
+            // 
+            this.<#=labelName#>.AutoSize = true;
+            this.<#=labelName#>.Location = new System.Drawing.Point(39, <#=labelY#>);
+            this.<#=labelName#>.Name = "<#=labelName#>";
+            this.<#=labelName#>.Size = new System.Drawing.Size(35, 13);
+            this.<#=labelName#>.TabIndex = <#=tabIndex#>;
+            this.<#=labelName#>.Text = "<#=  entity.Properties[i].Description #>";
+<#tabIndex++;#>
+            // 
+            // Control: <#=controlName#>
+            // 
+            this.<#=controlName#>.Location = new System.Drawing.Point(224, <#=controlY#>);
+            this.<#=controlName#>.Name = "<#=controlName#>";
+            this.<#=controlName#>.Size = new System.Drawing.Size(100, 20);
+            this.<#=controlName#>.TabIndex = <#=tabIndex#>;
+<#
+    switch(entity.Properties[i].ControlType)
+    {
+        case ControlType.CheckBox:
+                  WriteLine("\t\t\tthis." + controlName + ".UseVisualStyleBackColor = true;");
+                  break;
+        case ControlType.DropDown:
+                  WriteLine("\t\t\tthis." + controlName + ".FormattingEnabled = true;");
+                  break;
+        case ControlType.IntegerInput:
+                WriteLine("\t\t\tthis." + controlName + ".Mask = \"99990\";");
+                  WriteLine("\t\t\tthis." + controlName + ".ValidatingType = typeof(int);");
+                  break;
+        case ControlType.PhoneInput:
+                WriteLine("\t\t\tthis." + controlName + ".Mask = \"(999) 000-0000\";");
+                  break;
+        case ControlType.PostalCodeInput:
+                WriteLine("\t\t\tthis." + controlName + ".Mask = \"00000-9999\";");
+                  break;
+        case ControlType.RadioButton:
+                  WriteLine("\t\t\tthis." + controlName + ".UseVisualStyleBackColor = true;");
+                  WriteLine("\t\t\tthis." + controlName + ".AutoSize = true;");
+                  WriteLine("\t\t\tthis." + controlName + ".TabStop = true;");
+                  break;
+        case ControlType.TextAreaInput:
+                  WriteLine("\t\t\tthis." + controlName + ".Multiline = true;");
+                  WriteLine("\t\t\tthis." + controlName + ".ScrollBars = System.Windows.Forms.ScrollBars.Both;");
+                  break;
+    }
+
+        tabIndex++;
+        labelY+= spacing;
+        controlY+= spacing;
+}
+#>
+
+
+            // 
+            // <#= formName #>Form
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1010, 730);
+            this.Controls.Add(this.<#= groupBoxName #>);
+            this.Name = "<#= formName #>Form";
+            this.Text = "<#= entity.Description #>Form";
+            this.<#= groupBoxName #>.ResumeLayout(false);
+            this.<#= groupBoxName #>.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.GroupBox <#=groupBoxName#>;
+
+<# 
+//Output Input Controls
+for (int i=0;i<entity.Properties.Count;i++)
+{
+    WriteLine("\t\tprivate System.Windows.Forms.Label " + proj.GetControlName(ControlType.Label, entity.Properties[i].Name) + ";");
+
+    Write("\t\tprivate ");
+
+    switch(entity.Properties[i].ControlType)
+    {
+        case ControlType.CheckBox:
+            Write("System.Windows.Forms.CheckBox");
+            break;
+        case ControlType.DateInput:
+            Write("System.Windows.Forms.DateTimePicker");
+            break;
+        case ControlType.DropDown:
+            Write("System.Windows.Forms.ComboBox");
+            break;
+        case ControlType.IntegerInput:
+        case ControlType.PhoneInput:
+        case ControlType.PostalCodeInput:
+            Write("System.Windows.Forms.MaskedTextBox");
+            break;
+        case ControlType.RadioButton:
+            Write("System.Windows.Forms.RadioButton");
+            break;
+        default:
+            Write("System.Windows.Forms.TextBox");
+            break;
+    }
+
+            WriteLine(" " + entity.Properties[i].ControlName + ";");
+
+} 
+#>
+    }
+}
+<# 
+        string fileName = proj.GetControlName(ControlType.Form, entity.Name) + ".Designer.cs";
+        SaveOutput(fileName);
+    }
+#>
+<#+
+    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
+    const string inputName= "GenerationInput.json";
+
+    public CodeGenProject LoadProject()
+    {
+        string directory = GetSolutionDirectory();
+        string filePath= Path.Combine(directory, inputName);
+        return CodeGenProject.LoadFromFile(filePath);
+    }
+
+    private string GetSolutionDirectory()
+    {
+        string templateDirectory= GetTemplateDirectory();
+        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
+        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+    }
+
+    private string GetTemplateDirectory()
+    {
+        return Path.GetDirectoryName(Host.TemplateFile);
+    }
+
+    private void SaveOutput(string outputFileName)
+    {
+        SaveOutput(outputFileName, string.Empty);
+    }
+
+    private void SaveOutput(string outputFileName, string subDirectory) 
+	{
+        string templateDirectory = GetTemplateDirectory();
+        if (!string.IsNullOrEmpty(subDirectory))
+        {
+            templateDirectory = Path.Combine(templateDirectory, subDirectory);
+        }
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+
+        if (!Directory.Exists(templateDirectory))
+        {
+            Directory.CreateDirectory(templateDirectory);
+        }
+
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+        this.GenerationEnvironment.Clear();
+    }
+#>

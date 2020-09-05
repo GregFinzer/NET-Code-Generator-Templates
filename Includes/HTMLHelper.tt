@@ -1,0 +1,109 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#+
+/* 
+Name: HTMLHelper
+Author: Greg Finzer
+Description: Helper Class for the HTML Language
+*/
+    public static class HTMLHelper
+    {
+
+        public static string ToBootStrapControlText(CodeGenProp prop)
+        {
+            switch(prop.ControlType)
+            {
+                case ControlType.Form:
+                    return "<form action=\"#\" id=\"" + prop.ControlName + "\">";
+                case ControlType.Button:
+                    return "<button type=\"button\" class=\"btn btn-primary\" id=\"" + prop.ControlName + "\">" + prop.Description + "</button>";
+                case ControlType.CheckBox:
+                    return "<input type=\"checkbox\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.CurrencyInput:
+                    return "<input type=\"number\" pattern=\"(d{3})([.])(d{2})\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.DateInput:
+                    return "<input type=\"date\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.DropDown:
+                    string text = "<select class=\"form-control\" id=\"" + prop.ControlName + "\">";                    
+                    text += "<option value=\"\">Select</option>";
+                    text += "</select>";
+                    return text;
+                case ControlType.EmailInput:
+                    return "<input type=\"email\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.GroupBox:
+                    string groupBoxText = "<fieldset>";
+                    groupBoxText += "<legend>" + prop.Description + "</legend>";
+                    return groupBoxText;
+                case ControlType.IntegerInput:
+                    return "<input type=\"number\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.PhoneInput:
+                    return "<input type=\"tel\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.PostalCodeInput:
+                    return  "<input type=\"number\" maxlength=\"5\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.RadioButton:
+                    return  "<input type=\"radio\" name=\"" + prop.RadioName + "\" value=\"" + prop.RadioValue + "\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.TextAreaInput:
+                    return  "<textarea rows=\"4\" cols=\"50\" class=\"form-control\" id=\"" + prop.ControlName + "\">\r\n</textarea>";
+                    break;
+                case ControlType.UrlInput:
+                    return "<input type=\"url\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+                    break;
+                case ControlType.Label:
+                    return "<label class=\"control-label\" id=\"" + prop.ControlName + "\">" + prop.Description + "</label>";
+                default:
+                    return "<input type=\"text\" class=\"form-control\" id=\"" + prop.ControlName + "\" />";
+            
+            }
+        }
+
+        public static string ToControlText(CodeGenProp prop)
+        {
+            switch(prop.ControlType)
+            {
+                case ControlType.Form:
+                    return "<form action=\"#\" id=\"" + prop.ControlName + "\">";
+                case ControlType.Button:
+                    return "<button type=\"button\" id=\"" + prop.ControlName + "\">" + prop.Description + "</button>";
+                case ControlType.CheckBox:
+                    return "<input type=\"checkbox\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.CurrencyInput:
+                    return "<input type=\"number\" pattern=\"(d{3})([.])(d{2})\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.DateInput:
+                    return "<input type=\"date\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.DropDown:
+                    string text = "<select id=\"" + prop.ControlName + "\">";                    
+                    text += "<option value=\"\">Select</option>";
+                    text += "</select>";
+                    return text;
+                case ControlType.EmailInput:
+                    return "<input type=\"email\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.GroupBox:
+                    string groupBoxText = "<fieldset>";
+                    groupBoxText += "<legend>" + prop.Description + "</legend>";
+                    return groupBoxText;
+                case ControlType.IntegerInput:
+                    return "<input type=\"number\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.PhoneInput:
+                    return "<input type=\"tel\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.PostalCodeInput:
+                    return  "<input type=\"number\" maxlength=\"5\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.RadioButton:
+                    return  "<input type=\"radio\" name=\"" + prop.RadioName + "\" value=\"" + prop.RadioValue + "\" id=\"" + prop.ControlName + "\" />";
+                case ControlType.TextAreaInput:
+                    return  "<textarea rows=\"4\" cols=\"50\" id=\"" + prop.ControlName + "\" />" ;
+                    break;
+                case ControlType.UrlInput:
+                    return "<input type=\"url\" id=\"" + prop.ControlName + "\" />";
+                    break;
+                case ControlType.Label:
+                    return "<label id=\"" + prop.ControlName + "\">" + prop.Description + "</label>";
+                default:
+                    return "<input type=\"text\" id=\"" + prop.ControlName + "\" />";
+            
+            }
+        }
+    }
+#>

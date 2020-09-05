@@ -1,0 +1,62 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#+
+/* 
+Name: CSharpHelper
+Author: Greg Finzer
+Description: Helper Class for the C# Language
+*/
+    public static class CSharpHelper
+    {
+        public static string ToType(CodeGenProp prop)
+        {
+            switch (prop.DataType)
+            {
+                case DataType.Binary:
+                    return "byte[]";
+                case DataType.Byte:
+                    return prop.AllowNull ? "byte?" : "byte";
+                case DataType.Boolean:
+                    return prop.AllowNull ? "bool?" : "bool";
+                case DataType.Currency:
+                case DataType.Decimal:
+                    return prop.AllowNull ? "decimal?" : "decimal";
+                case DataType.DateTime:
+                    return prop.AllowNull ? "DateTime?" : "DateTime";
+                case DataType.Double:
+                    return prop.AllowNull ? "double?" : "double";
+                case DataType.Guid:
+                    return prop.AllowNull ? "Guid?" : "Guid";
+                case DataType.Int16:
+                    return prop.AllowNull ? "short?" : "short";
+                case DataType.Int32:
+                    return prop.AllowNull ? "int?" : "int";
+                case DataType.Int64:
+                    return prop.AllowNull ? "long?" : "long";
+                case DataType.Single:
+                    return prop.AllowNull ? "float?" : "float";
+                case DataType.UInt16:
+                    return prop.AllowNull ? "ushort?" : "ushort";
+                case DataType.UInt32:
+                    return prop.AllowNull ? "uint?" : "uint";
+                case DataType.UInt64:
+                    return prop.AllowNull ? "ulong?" : "ulong";
+                case DataType.Char:
+                    return prop.AllowNull ? "char?" : "char";
+                case DataType.ListInt:
+                    return "List<int>";
+                case DataType.ArrayInt:
+                    return "int[]";
+                case DataType.ListString:
+                    return "List<string>";
+                case DataType.ArrayString:
+                    return "string[]";
+                default:
+                    return "string";
+            }
+        }
+    }
+#>

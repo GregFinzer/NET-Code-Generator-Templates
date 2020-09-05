@@ -1,0 +1,63 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#+
+/* 
+Name: VBNetHelper
+Author: Greg Finzer
+Description: Helper Class for the VB.NET Language
+*/
+
+    public static class VBNetHelper
+    {
+        public static string ToType(CodeGenProp prop)
+        {
+            switch (prop.DataType)
+            {
+                case DataType.Binary:
+                    return "Byte()";
+                case DataType.Byte:
+                    return prop.AllowNull ? "Byte?" : "Byte";
+                case DataType.Boolean:
+                    return prop.AllowNull ? "Boolean?" : "Boolean";
+                case DataType.Currency:
+                case DataType.Decimal:
+                    return prop.AllowNull ? "Decimal?" : "Decimal";
+                case DataType.DateTime:
+                    return prop.AllowNull ? "Date?" : "Date";
+                case DataType.Double:
+                    return prop.AllowNull ? "Double?" : "Double";
+                case DataType.Guid:
+                    return prop.AllowNull ? "Guid?" : "Guid";
+                case DataType.Int16:
+                    return prop.AllowNull ? "Short?" : "Short";
+                case DataType.Int32:
+                    return prop.AllowNull ? "Integer?" : "Integer";
+                case DataType.Int64:
+                    return prop.AllowNull ? "Long?" : "Long";
+                case DataType.Single:
+                    return prop.AllowNull ? "Single?" : "Single";
+                case DataType.UInt16:
+                    return prop.AllowNull ? "UShort?" : "UShort";
+                case DataType.UInt32:
+                    return prop.AllowNull ? "UInteger?" : "UInteger";
+                case DataType.UInt64:
+                    return prop.AllowNull ? "ULong?" : "ULong";
+                case DataType.Char:
+                    return prop.AllowNull ? "Char?" : "Char";
+                case DataType.ListInt:
+                    return "List(Of Integer)";
+                case DataType.ArrayInt:
+                    return "Integer()";
+                case DataType.ListString:
+                    return "List(Of String)";
+                case DataType.ArrayString:
+                    return "String()";
+                default:
+                    return "String";
+            }
+        }
+    }
+#>

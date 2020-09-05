@@ -1,0 +1,394 @@
+{
+  "CompanyName": "Kellerman Software",
+  "CompanyNamespace": "KellermanSoftware",
+  "ProjectName": "CRM",
+  "ProjectNamespace": "KellermanSoftware.CRM",
+  "TemplateDirectory": "C:\\_git\\NET-Code-Generator-Templates\\Languages\\HTML\\HTML_Bootstrap_Form",
+  "OutputDirectory": "C:\\projects\\crm",
+  "Settings": {
+    "TableNamingConvention": 3,
+    "ColumnNamingConvention": 2,
+    "SchemaOwner": "",
+    "FileNamingConvention": 0,
+    "ControlNamingConvention": 0,
+    "Prefixes": {
+      "CheckBox": "chk",
+      "CurrencyInput": "txt",
+      "DateInput": "txt",
+      "DropDown": "ddl",
+      "EmailInput": "txt",
+      "GroupBox": "grp",
+      "IntegerInput": "txt",
+      "PhoneInput": "txt",
+      "PostalCodeInput": "txt",
+      "RadioButton": "rdo",
+      "TextAreaInput": "txt",
+      "TextInput": "txt",
+      "UrlInput": "txt",
+      "Label": "lbl",
+      "Form": "frm",
+      "Button": "btn"
+    },
+    "Suffixes": {
+      "CheckBox": "CheckBox",
+      "CurrencyInput": "Input",
+      "DateInput": "Input",
+      "DropDown": "DropDown",
+      "EmailInput": "TextBox",
+      "GroupBox": "GroupBox",
+      "IntegerInput": "Input",
+      "PhoneInput": "TextBox",
+      "PostalCodeInput": "TextBox",
+      "RadioButton": "Radio",
+      "TextAreaInput": "TextBox",
+      "TextInput": "TextBox",
+      "UrlInput": "TextBox",
+      "Label": "Label",
+      "Form": "Form",
+      "Button": "Button"
+    }
+  },
+  "Entities": [
+    {
+      "Properties": [
+        {
+          "AllowNull": false,
+          "Name": "MyInt",
+          "DataType": 11,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyLong",
+          "DataType": 12,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyByte",
+          "DataType": 2,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyInt16",
+          "DataType": 10,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyInt32",
+          "DataType": 11,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyInt64",
+          "DataType": 12,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyDecimal",
+          "DataType": 7,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyString",
+          "DataType": 16,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyIntList",
+          "DataType": 102,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyInnerType",
+          "DataType": 16,
+          "Length": 30,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyIntArray",
+          "DataType": 103,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyStringList",
+          "DataType": 104,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyStringArray",
+          "DataType": 105,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyDateTime",
+          "DataType": 6,
+          "Length": null,
+          "ControlType": 3
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyBoolean",
+          "DataType": 3,
+          "Length": null,
+          "ControlType": 1
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyByteArray",
+          "DataType": 1,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyChar",
+          "DataType": 101,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MySByte",
+          "DataType": 2,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MySingle",
+          "DataType": 15,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyDouble",
+          "DataType": 8,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyFloat",
+          "DataType": 15,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyShort",
+          "DataType": 10,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyUShort",
+          "DataType": 18,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyUInt",
+          "DataType": 19,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyULong",
+          "DataType": 20,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyLongNullable",
+          "DataType": 12,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyByteNullable",
+          "DataType": 2,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyInt16Nullable",
+          "DataType": 10,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyInt32Nullable",
+          "DataType": 11,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyInt64Nullable",
+          "DataType": 12,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyDecimalNullable",
+          "DataType": 7,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyDateNullable",
+          "DataType": 6,
+          "Length": null,
+          "ControlType": 3
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyBooleanNullable",
+          "DataType": 3,
+          "Length": null,
+          "ControlType": 1
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyCharNullable",
+          "DataType": 101,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MySByteNullable",
+          "DataType": 2,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MySingleNullable",
+          "DataType": 15,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyDoubleNullable",
+          "DataType": 8,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyFloatNullable",
+          "DataType": 15,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyShortNullable",
+          "DataType": 10,
+          "Length": null,
+          "ControlType": 7
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyUShortNullable",
+          "DataType": 18,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyUIntNullable",
+          "DataType": 19,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": true,
+          "Name": "MyULongNullable",
+          "DataType": 20,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyDescription",
+          "DataType": 16,
+          "Length": null,
+          "ControlType": 11
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyPostalCode",
+          "DataType": 16,
+          "Length": null,
+          "ControlType": 9
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyPhone",
+          "DataType": 16,
+          "Length": null,
+          "ControlType": 8
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyUrl",
+          "DataType": 16,
+          "Length": null,
+          "ControlType": 13
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyAmount",
+          "DataType": 7,
+          "Length": null,
+          "ControlType": 12
+        },
+        {
+          "AllowNull": false,
+          "Name": "MyEmail",
+          "DataType": 16,
+          "Length": null,
+          "ControlType": 5
+        }
+      ],
+      "Name": "AllTypes"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#+
+/* 
+Name: XAML Helper
+Author: Greg Finzer
+Description: Helper Class for XAML
+*/
+    public static class XAMLHelper
+    {
+        public static string ToControlText(CodeGenProp prop, int col, int row)
+        {
+            string result= string.Empty;
+
+            if (prop.ControlType != ControlType.Button)
+            {
+                result = "<TextBlock Grid.Column=\"" + (col - 1).ToString() + "\" " +
+                    "Grid.Row=\"" + row.ToString() + "\" " +
+                    "Margin=\"10,5\" VerticalAlignment=\"Center\">" + prop.Description + "</TextBlock>" +
+                    Environment.NewLine;
+            }
+
+            switch(prop.ControlType)
+            {
+                case ControlType.Button:
+                    result += "<Button x:Name=\"" + prop.ControlName +
+                        "\" Grid.Column=\"" + col.ToString() + "\" " +
+                        "Grid.Row=\"" + row.ToString() + "\" " +
+                        "Width=\"150\" HorizontalAlignment=\"Left\" Content=\"" + prop.Description + "\" />";
+                    break;
+                case ControlType.CheckBox:
+                    result += "<CheckBox x:Name=\"" + prop.ControlName + "\" " +
+                        "Grid.Column=\"" + col.ToString() + "\" " +
+                        "Grid.Row=\"" + row.ToString() + "\" " +
+                        "VerticalAlignment=\"Center\"  />";
+                    break;
+                case ControlType.DateInput:
+                    result += "<DatePicker x:Name=\"" + prop.ControlName + "\" " +
+                     "Grid.Column=\"" + col.ToString() + "\" " +
+                     "Grid.Row=\"" + row.ToString() + "\" " +
+                     "Margin=\"0,5\" VerticalAlignment=\"Center\" />";
+                    break;
+                case ControlType.DropDown:
+                    result += "<ComboBox x:Name=\"" + prop.ControlName + "\" " +
+                    "Grid.Column=\"" + col.ToString() + "\" " + 
+                    "Grid.Row=\"" + row.ToString() + "\" "+
+                    "Margin=\"0,5\" VerticalAlignment=\"Center\" />";
+                    break;
+                case ControlType.RadioButton:
+                    result += "<RadioButton x:Name=\"" + prop.ControlName + "\" " +
+                    "Grid.Column=\"" + col.ToString() + "\" " +
+                    "Grid.Row=\"" + row.ToString() + "\" " +
+                    "Margin=\"0,5\" VerticalAlignment=\"Center\"/>";
+                    break;
+                case ControlType.Label:
+                    result += "<Label x:Name=\"" + prop.ControlName + "\" " +
+                    "Grid.Column=\"" + col.ToString() + "\" " +
+                    "Grid.Row=\"" + row.ToString() + "\"" +
+                    "Content=\"" + prop.Description + "\" " +
+                    "Margin=\"0,5\" VerticalAlignment=\"Center\"/>";
+                    break;
+                default:
+                    result+= "<TextBox x:Name=\"" + prop.ControlName + "\" " +
+                    "Grid.Column=\"" + col.ToString() + "\" " +
+                    "Grid.Row=\"" + row.ToString() + "\" " +
+                    "Margin=\"0,5\" VerticalAlignment=\"Center\"/>";
+                    break;
+            }
+
+            return result;
+        }
+    }
+#>

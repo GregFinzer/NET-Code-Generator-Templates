@@ -1,0 +1,136 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".out" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+/*
+Name: ReactHelper
+Author: Greg Finzer
+Description: Helper Class for the React JavaScript Framework
+*/
+    public static class ReactHelper
+    {
+        public static string ToStateProp(CodeGenProp prop)
+        {
+            string result;
+            List<string> previousRadios = new List<string>();
+
+            for (int i=0;i<prop.Entity.Properties.Count;i++)
+            {
+                var indexProp = prop.Entity.Properties[i];
+
+                if (indexProp.Name == prop.Name)
+                {
+                    break;
+                }
+
+                if (indexProp.ControlType == ControlType.RadioButton)
+                {
+                    previousRadios.Add(indexProp.RadioName);
+                }
+            }
+
+            switch(prop.ControlType)
+            {
+                case ControlType.Button:
+                case ControlType.Form:
+                case ControlType.GroupBox:
+                    return string.Empty;
+                case ControlType.CheckBox:
+                    result = prop.NameCamelCase + " : false";
+                    break;
+                case ControlType.RadioButton:
+                    if (previousRadios.Contains(prop.RadioName))
+                        return string.Empty;
+
+                    result = prop.RadioName + " : " + prop.RadioValue;
+                    break;
+                case ControlType.IntegerInput:
+                case ControlType.CurrencyInput:
+                    result = prop.NameCamelCase + " : 0";
+                    break;
+                default:
+                    result = prop.NameCamelCase + " : ''";
+                    break;
+            }
+
+            if (prop.Name != prop.Entity.Properties[prop.Entity.Properties.Count-1].Name)
+            {                
+                result += ",";
+            }
+
+            return result;
+        }
+
+        public static string ToLabelText(CodeGenProp prop)
+        {
+            switch(prop.ControlType)
+            {
+                case ControlType.Form:
+                case ControlType.GroupBox:
+                case ControlType.Label:
+                    return string.Empty;
+                default:
+                    return "<label htmlFor=\"" + prop.NameCamelCase + "\">" + prop.Description + "</label>";
+            }
+        }
+
+        public static string ToControlText(CodeGenProp prop)
+        {
+            switch(prop.ControlType)
+            {
+                case ControlType.Form:
+                case ControlType.GroupBox:
+                    return string.Empty;
+                case ControlType.Button:
+                    return "<button type=\"button\" id=\"" + prop.NameCamelCase + "\">" + prop.Description + "</button>";
+                case ControlType.CheckBox:
+                    return "<input type=\"checkbox\" id=\"" + prop.NameCamelCase 
+                        + "\" onChange={this.handleChange} checked={this.state." + prop.NameCamelCase + "} />";
+                case ControlType.CurrencyInput:
+                    return "<input type=\"number\" pattern=\"(d{3})([.])(d{2})\" id=\"" + prop.NameCamelCase 
+                        + "\"  onChange={this.handleChange} value={this.state." + prop.NameCamelCase + "} />";
+                case ControlType.DateInput:
+                    return "<input type=\"date\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state." + prop.NameCamelCase + "} />";
+                case ControlType.DropDown:
+                    string text = "<select id=\"" + prop.NameCamelCase 
+                        + "\" onChange={this.handleChange}  value={this.state." + prop.NameCamelCase + "}>";                    
+                    text += "<option value=\"\">Select</option>";
+                    text += "</select>";
+                    return text;
+                case ControlType.EmailInput:
+                    return "<input type=\"email\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state."+ prop.NameCamelCase + "} />";
+                case ControlType.IntegerInput:
+                    return "<input type=\"number\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state."+ prop.NameCamelCase + "} />";
+                case ControlType.PhoneInput:
+                    return "<input type=\"tel\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state."+ prop.NameCamelCase + "} />";
+                case ControlType.PostalCodeInput:
+                    return  "<input type=\"number\" maxlength=\"5\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state."+ prop.NameCamelCase + "} />";
+                case ControlType.RadioButton:
+                    return  "<input type=\"radio\" name=\"" + prop.RadioName + "\" value=\"" + prop.RadioValue + "\" id=\"" + prop.NameCamelCase 
+                    + "\"  onChange={this.handleChange} checked={this.state." + prop.RadioName + " === '" + prop.RadioValue + "'} />";
+                case ControlType.TextAreaInput:
+                    return  "<textarea rows=\"4\" cols=\"50\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state."+ prop.NameCamelCase + "} />";
+                    break;
+                case ControlType.UrlInput:
+                    return "<input type=\"url\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state."+ prop.NameCamelCase + "} />";
+                    break;
+                case ControlType.Label:
+                    return "<label id=\"" + prop.NameCamelCase + "\">{this.state." + prop.NameCamelCase + "}</label>";
+                default:
+                    return "<input type=\"text\" id=\"" + prop.NameCamelCase  
+                        + "\"  onChange={this.handleChange} value={this.state."+ prop.NameCamelCase + "} />";
+            
+            }
+        }
+    }
+#>
