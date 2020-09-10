@@ -4,6 +4,7 @@
 <#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
 <#@ include file="$(projectDir)\Includes\CSharpHelper.tt" #>
 <#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic.Models" #>
+<#@ import namespace="KellermanSoftware.NetCodeGenerator.Logic" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Linq" #>
 <#
@@ -116,21 +117,20 @@ namespace <#=proj.ProjectNamespace #>.Controllers
     }
 #>
 <#+
-    const string codeGenTemplatesName = "NET-Code-Generator-Templates";
-    const string inputName= "GenerationInput.json";
+    //Don't change the code below or the generation will not work
 
     public CodeGenProject LoadProject()
     {
         string directory = GetSolutionDirectory();
-        string filePath= Path.Combine(directory, inputName);
+        string filePath= Path.Combine(directory, Constants.GenerationInputFileName);
         return CodeGenProject.LoadFromFile(filePath);
     }
 
     private string GetSolutionDirectory()
     {
         string templateDirectory= GetTemplateDirectory();
-        int projectIndex= templateDirectory.IndexOf(codeGenTemplatesName);
-        return templateDirectory.Substring(0, projectIndex + codeGenTemplatesName.Length);
+        int projectIndex= templateDirectory.IndexOf(Constants.TemplatesDirectoryName);
+        return templateDirectory.Substring(0, projectIndex + Constants.TemplatesDirectoryName.Length);
     }
 
     private string GetTemplateDirectory()
