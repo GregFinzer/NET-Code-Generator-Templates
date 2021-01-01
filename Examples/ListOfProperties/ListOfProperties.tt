@@ -1,4 +1,4 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ output extension=".out" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>

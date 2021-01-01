@@ -3,7 +3,7 @@
   "CompanyNamespace": "KellermanSoftware",
   "ProjectName": "CRM",
   "ProjectNamespace": "KellermanSoftware.CRM",
-  "TemplateDirectory": "C:\\_git\\NET-Code-Generator-Templates\\Languages\\HTML\\HTML_Bootstrap_Form",
+  "TemplateDirectory": "C:\\_git\\NET-Code-Generator-Templates\\Examples\\ListOfProperties",
   "OutputDirectory": "C:\\projects\\crm",
   "Settings": {
     "TableNamingConvention": 3,
