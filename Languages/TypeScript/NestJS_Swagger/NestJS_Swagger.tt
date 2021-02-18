@@ -1,4 +1,4 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ output extension=".out" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="$(projectDir)\Assemblies\KellermanSoftware.NET-Code-Generator-Logic.dll" #>
@@ -47,6 +47,7 @@ WriteLine("public " + prop.NameCamelCase + " : " + TypeScriptHelper.ToType(prop)
 ClearIndent();
 WriteLine(string.Empty);
 }#>
+}
 <# 
         string fileName = entity.Name + ".ts";
         SaveOutput(fileName);
